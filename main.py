@@ -66,10 +66,13 @@ class Models(torch.nn.Module):
         x = self.Classes(x)
         return x
 
+Use_gpu=torch.cuda.is_available()
+print(Use_gpu)
 
 model = Models()
 # print(model)
-
+if Use_gpu:
+    model=model.cuda()
 loss_f = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.00001)
 
@@ -86,7 +89,10 @@ for epoch in range(epoch_n):
     running_corrects = 0
     for batch, data in enumerate(train_dataloader, 1):
         X, y = data
-        X, y = Variable(X), Variable(y)
+        if Use_gpu:
+            X,y=Variable(X.cuda()),Variable(y.cuda())
+        else:
+            X, y = Variable(X), Variable(y)
         y_pred = model(X)  # 预测结果
         _, pred = torch.max(y_pred.data, 1)
         optimizer.zero_grad()
@@ -110,7 +116,10 @@ for epoch in range(epoch_n):
     running_corrects = 0
     for batch, data in enumerate(test_dataloader, 1):
         X, y = data
-        X, y = Variable(X), Variable(y)
+        if Use_gpu:
+            X, y = Variable(X.cuda()), Variable(y.cuda())
+        else:
+            X, y = Variable(X), Variable(y)
         y_pred = model(X)  # 预测结果
         _, pred = torch.max(y_pred.data, 1)
         optimizer.zero_grad()
