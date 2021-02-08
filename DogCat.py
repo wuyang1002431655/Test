@@ -127,7 +127,7 @@ for epoch in range(epoch_n):
         running_loss += loss.item()  # 累计损失
         running_corrects += torch.sum(pred == y.data)
         if batch % 500 == 0:
-            print("Batch{},Train Loss:{:.4f}, Train ACC:{:.4f}".format(batch, running_loss / batch,
+            print("Batch{},Train Loss:{:.4f}, Train ACC:{:.4f}%".format(batch, running_loss / batch,
                                                                        100 * running_corrects / (16 * batch)))
     epoch_loss = running_loss * 16 / len(test_dataset)
     epoch_acc = 100 * running_corrects / len(test_dataset)
