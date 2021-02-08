@@ -4,7 +4,7 @@ import shutil
 
 
 def change_image():
-    root = './dataset'
+    root = '../dataset'
     if 'DogsVSCats' in os.listdir(root):
         print("DogsVSCats已存在")
         return
